@@ -8,12 +8,12 @@ import styles from './layout.module.css';
 
 export const metadata = {
   metadataBase: new URL(process.env.BASE_URL || 'http://localhost:3000'),
-  title: 'Simple Blog',
-  description: 'A simple blog presented by microCMS',
+  title: 'kode Blog of lifestyle',
+  description: 'kode lifestyle blog with Next.js, microCMS, and Vercel.',
   openGraph: {
-    title: 'Simple Blog',
-    description: 'A simple blog presented by microCMS',
-    images: '/ogp.png',
+    title: 'kode Blog',
+    description: 'kode lifestyle blog with Next.js, microCMS, and Vercel.',
+    images: '/ogp.png', // TODO: 最新記事のサムネを反映する
   },
   alternates: {
     canonical: '/',
