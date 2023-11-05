@@ -12,8 +12,8 @@ export async function POST(req: any, res: any) {
     }
 
     const contentId = req.body.contents.new.id;
-    await res.unstable_revalidate(`/articles/${contentId}`);
-
+    await res.revalidate(`/articles/${contentId}`);
+    console.log('revalidate', contentId);
     return res.status(200).send();
   } catch (err) {
     return res.status(500).send('Error revalidating');
