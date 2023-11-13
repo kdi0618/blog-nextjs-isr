@@ -1,18 +1,6 @@
-type Request = {
-  body: any;
-  headers: {
-    'X-MICROCMS-Signature': string;
-  };
-};
+import { NextApiRequest, NextApiResponse } from 'next';
 
-type Response = {
-  status: (code: number) => {
-    send: (message?: string) => void;
-  };
-  revalidate: (path: string) => void;
-};
-
-export async function POST(req: Request, res: Response) {
+export async function POST(req: any, res: NextApiResponse) {
   try {
     const crypto = require('crypto');
 
@@ -21,14 +9,18 @@ export async function POST(req: Request, res: Response) {
       .update(req.body)
       .digest('hex');
     const signature = req.headers['X-MICROCMS-Signature'];
-    if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))) {
+    if (
+      !signature ||
+      Array.isArray(signature) ||
+      !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))
+    ) {
       return res.status(401).send('Invalid token');
     }
 
     const contentId = req.body.contents.new.id;
     await res.revalidate(`/articles/${contentId}`);
     console.log('revalidate', contentId);
-    return res.status(200).send();
+    return res.status(200).send('Revalidated successfully');
   } catch (err) {
     return res.status(500).send('Error revalidating');
   }
