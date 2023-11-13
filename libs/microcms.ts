@@ -52,7 +52,12 @@ export const getList = async (queries?: MicroCMSQueries) => {
       Object.keys(queries).forEach(key => url.searchParams.append(key, queries[key]));
     }
 
-    const response = await fetch(url.toString(), { headers });
+    const response = await fetch(url.toString(), {
+      headers,
+      next: {
+        tags: ['blog']
+      }
+    });
     if (!response.ok) {
       throw new Error('Failed to fetch list');
     }
@@ -72,7 +77,12 @@ export const getDetail = async (contentId: string, queries?: MicroCMSQueries) =>
       Object.keys(queries).forEach(key => url.searchParams.append(key, queries[key]));
     }
 
-    const response = await fetch(url.toString(), { headers });
+    const response = await fetch(url.toString(), {
+      headers,
+      next: {
+        tags: ['blog']
+      }
+    });
     if (!response.ok) {
       throw new Error('Failed to fetch detail');
     }
@@ -92,7 +102,12 @@ export const getTagList = async (queries?: MicroCMSQueries) => {
       Object.keys(queries).forEach(key => url.searchParams.append(key, queries[key]));
     }
 
-    const response = await fetch(url.toString(), { headers });
+    const response = await fetch(url.toString(), {
+      headers,
+      next: {
+        tags: ['tag']
+      }
+    });
     if (!response.ok) {
       throw new Error('Failed to fetch tag list');
     }
@@ -112,7 +127,12 @@ export const getTag = async (contentId: string, queries?: MicroCMSQueries) => {
       Object.keys(queries).forEach(key => url.searchParams.append(key, queries[key]));
     }
 
-    const response = await fetch(url.toString(), { headers });
+    const response = await fetch(url.toString(), {
+      headers,
+      next: {
+        tags: ['tag']
+      }
+    });
     if (!response.ok) {
       throw new Error('Failed to fetch tag');
     }

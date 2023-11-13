@@ -1,3 +1,4 @@
+import { revalidateTag } from 'next/cache'
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export async function POST(req: any, res: NextApiResponse) {
@@ -18,7 +19,7 @@ export async function POST(req: any, res: NextApiResponse) {
     }
 
     const contentId = req.body.contents.new.id;
-    await res.revalidate(`/articles/${contentId}`);
+    revalidateTag('blog')
     console.log('revalidate', contentId);
     return res.status(200).send('Revalidated successfully');
   } catch (err) {
