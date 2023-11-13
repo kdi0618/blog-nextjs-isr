@@ -1,4 +1,18 @@
-export async function POST(req: any, res: any) {
+type Request = {
+  body: any;
+  headers: {
+    'X-MICROCMS-Signature': string;
+  };
+};
+
+type Response = {
+  status: (code: number) => {
+    send: (message?: string) => void;
+  };
+  revalidate: (path: string) => void;
+};
+
+export async function POST(req: Request, res: Response) {
   try {
     const crypto = require('crypto');
 
