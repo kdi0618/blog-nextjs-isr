@@ -1,11 +1,9 @@
-import { createClient } from 'microcms-js-sdk';
 import type {
   MicroCMSQueries,
   MicroCMSImage,
   MicroCMSDate,
   MicroCMSContentId,
 } from 'microcms-js-sdk';
-import { notFound } from 'next/navigation';
 
 // タグの型定義
 export type Tag = {
@@ -33,65 +31,95 @@ export type Blog = {
 
 export type Article = Blog & MicroCMSContentId & MicroCMSDate;
 
-if (!process.env.MICROCMS_SERVICE_DOMAIN) {
-  throw new Error('MICROCMS_SERVICE_DOMAIN is required');
+// 環境変数の確認
+const serviceDomain = process.env.MICROCMS_SERVICE_DOMAIN;
+const apiKey = process.env.MICROCMS_API_KEY;
+
+if (!serviceDomain || !apiKey) {
+  throw new Error('MICROCMS_SERVICE_DOMAIN and MICROCMS_API_KEY are required');
 }
 
-if (!process.env.MICROCMS_API_KEY) {
-  throw new Error('MICROCMS_API_KEY is required');
-}
-
-// Initialize Client SDK.
-export const client = createClient({
-  serviceDomain: process.env.MICROCMS_SERVICE_DOMAIN,
-  apiKey: process.env.MICROCMS_API_KEY,
-});
+const headers = {
+  'Content-Type': 'application/json',
+  'X-API-KEY': apiKey,
+};
 
 // ブログ一覧を取得
 export const getList = async (queries?: MicroCMSQueries) => {
-  const listData = await client
-    .getList<Blog>({
-      endpoint: 'blog',
-      queries,
-    })
-    .catch(notFound);
-  return listData;
+  try {
+    const url = new URL(`https://${serviceDomain}.microcms.io/api/v1/blog`);
+    if (queries) {
+      Object.keys(queries).forEach(key => url.searchParams.append(key, queries[key]));
+    }
+
+    const response = await fetch(url.toString(), { headers });
+    if (!response.ok) {
+      throw new Error('Failed to fetch list');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 // ブログの詳細を取得
 export const getDetail = async (contentId: string, queries?: MicroCMSQueries) => {
-  const detailData = await client
-    .getListDetail<Blog>({
-      endpoint: 'blog',
-      contentId,
-      queries,
-    })
-    .catch(notFound);
+  try {
+    const url = new URL(`https://${serviceDomain}.microcms.io/api/v1/blog/${contentId}`);
+    if (queries) {
+      Object.keys(queries).forEach(key => url.searchParams.append(key, queries[key]));
+    }
 
-  return detailData;
+    const response = await fetch(url.toString(), { headers });
+    if (!response.ok) {
+      throw new Error('Failed to fetch detail');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 // タグの一覧を取得
 export const getTagList = async (queries?: MicroCMSQueries) => {
-  const listData = await client
-    .getList<Tag>({
-      endpoint: 'tags',
-      queries,
-    })
-    .catch(notFound);
+  try {
+    const url = new URL(`https://${serviceDomain}.microcms.io/api/v1/tags`);
+    if (queries) {
+      Object.keys(queries).forEach(key => url.searchParams.append(key, queries[key]));
+    }
 
-  return listData;
+    const response = await fetch(url.toString(), { headers });
+    if (!response.ok) {
+      throw new Error('Failed to fetch tag list');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 // タグの詳細を取得
 export const getTag = async (contentId: string, queries?: MicroCMSQueries) => {
-  const detailData = await client
-    .getListDetail<Tag>({
-      endpoint: 'tags',
-      contentId,
-      queries,
-    })
-    .catch(notFound);
+  try {
+    const url = new URL(`https://${serviceDomain}.microcms.io/api/v1/tags/${contentId}`);
+    if (queries) {
+      Object.keys(queries).forEach(key => url.searchParams.append(key, queries[key]));
+    }
 
-  return detailData;
+    const response = await fetch(url.toString(), { headers });
+    if (!response.ok) {
+      throw new Error('Failed to fetch tag');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
