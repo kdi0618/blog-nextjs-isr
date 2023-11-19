@@ -1,7 +1,8 @@
-import { revalidateTag } from 'next/cache'
+import { revalidateTag } from 'next/cache';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export async function POST(req: any, res: NextApiResponse) {
+  console.log('start')
   try {
     const crypto = require('crypto');
 
@@ -15,6 +16,7 @@ export async function POST(req: any, res: NextApiResponse) {
       Array.isArray(signature) ||
       !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))
     ) {
+      console.log('404stop')
       return res.status(401).send('Invalid token');
     }
 
