@@ -21,6 +21,7 @@ interface ApiRequest extends NextApiRequest {
 }
 
 export async function POST(req: any, res: NextApiResponse) {
+  console.log('res', res);
   try {
     // const expectedSignature = crypto
     //   .createHmac('sha256', 'remove11cache')
