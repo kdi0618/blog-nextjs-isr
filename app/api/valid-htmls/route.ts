@@ -1,6 +1,8 @@
 import { revalidateTag } from 'next/cache';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+const crypto = require('crypto');
+
 // Define the expected structure of your request body
 interface RequestBody {
   contents: {
@@ -21,13 +23,12 @@ interface ApiRequest extends NextApiRequest {
 export async function POST(req: any, res: NextApiResponse) {
   console.log('req.headers', req.headers);
   try {
-    const crypto = require('crypto');
-
     const expectedSignature = crypto
       .createHmac('sha256', 'remove11cache')
       .update(req.body)
       .digest('hex');
-    const signature = req.headers['X-MICROCMS-Signature'];
+
+    const signature = req.headers['x-microcms-signature'] || req.headers['X-MICROCMS-Signature'];
     console.log('signature', signature);
     console.log('expectedSignature', expectedSignature);
     if (
