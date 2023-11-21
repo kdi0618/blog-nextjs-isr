@@ -1,6 +1,23 @@
 import { revalidateTag } from 'next/cache';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+// Define the expected structure of your request body
+interface RequestBody {
+  contents: {
+    new: {
+      id: string;
+    };
+  };
+}
+
+// Extend NextApiRequest to include your custom body
+interface ApiRequest extends NextApiRequest {
+  body: RequestBody;
+  headers: {
+    'X-MICROCMS-Signature': string | string[] | undefined;
+  };
+}
+
 export async function POST(req: any, res: NextApiResponse) {
   console.log('start')
   try {
