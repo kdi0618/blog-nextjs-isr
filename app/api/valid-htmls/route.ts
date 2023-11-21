@@ -1,7 +1,7 @@
 import { revalidateTag } from 'next/cache';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const crypto = require('crypto');
+import crypto from 'crypto';
 
 // Define the expected structure of your request body
 interface RequestBody {
