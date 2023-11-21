@@ -2,6 +2,7 @@ import { revalidateTag } from 'next/cache';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import crypto from 'crypto';
+import { NextRequest, NextResponse } from 'next/server';
 
 // Define the expected structure of your request body
 interface RequestBody {
@@ -20,8 +21,9 @@ interface ApiRequest extends NextApiRequest {
   };
 }
 
-export async function POST(req: any, res: NextApiResponse) {
-  console.log('res', res);
+export async function POST(req: any) {
+  console.log('res', NextRequest);
+  console.log('res', NextResponse);
   try {
     // const expectedSignature = crypto
     //   .createHmac('sha256', 'remove11cache')
