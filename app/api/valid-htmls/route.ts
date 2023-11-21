@@ -27,8 +27,12 @@ export async function POST(req: any) {
 
     console.log('revalidate', contentId);
 
-    return new Response('Revalidation successful');
+    return new Response('Revalidation successful', {
+      status: 200,
+    });
   } catch {
-    return Response.error();
+    return new Response('Revalidation failed', {
+      status: 500,
+    });
   }
 }
