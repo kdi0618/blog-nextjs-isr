@@ -3,24 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import crypto from 'crypto';
 
-// Define the expected structure of your request body
-interface RequestBody {
-  contents: {
-    new: {
-      id: string;
-    };
-  };
-}
-
-// Extend NextApiRequest to include your custom body
-interface ApiRequest extends NextApiRequest {
-  body: RequestBody;
-  headers: {
-    'X-MICROCMS-Signature': string | string[] | undefined;
-  };
-}
-
-export async function POST(req: ApiRequest) {
+export async function POST(req: any) {
   try {
     // const expectedSignature = crypto
     //   .createHmac('sha256', 'remove11cache')
