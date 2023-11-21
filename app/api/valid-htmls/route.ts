@@ -5,7 +5,6 @@ import crypto from 'crypto';
 
 export async function POST(req: any) {
   try {
-    console.log('start');
     // const expectedSignature = crypto
     //   .createHmac('sha256', 'remove11cache')
     //   .update(req.body)
@@ -22,7 +21,7 @@ export async function POST(req: any) {
     //   return res.status(401).send('Invalid token');
     // }
 
-    console.log('id取得前');
+    console.log('req.body', req.body);
 
     const contentId = req.body.contents.new.id;
 
