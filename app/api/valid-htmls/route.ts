@@ -3,7 +3,10 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import crypto from 'crypto';
 
+console.log('before post handler');
+
 export async function POST(req: any) {
+  console.log('after post handler');
   try {
     // const expectedSignature = crypto
     //   .createHmac('sha256', 'remove11cache')
@@ -21,8 +24,8 @@ export async function POST(req: any) {
     //   return res.status(401).send('Invalid token');
     // }
 
-    console.log('req.body', new Request(req.body));
-    console.log('req', new Request(req));
+    console.log('req.body', req.body);
+    console.log('req', req);
 
     const contentId = req.body.contents.new.id;
 
