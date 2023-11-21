@@ -22,25 +22,21 @@ interface ApiRequest extends NextApiRequest {
 
 export async function POST(req: any, res: NextApiResponse) {
   try {
-    const expectedSignature = crypto
-      .createHmac('sha256', 'remove11cache')
-      .update(req.body)
-      .digest('hex');
+    // const expectedSignature = crypto
+    //   .createHmac('sha256', 'remove11cache')
+    //   .update(req.body)
+    //   .digest('hex');
 
-    console.log('middle');
-    console.log('res', res);
+    // const signature = req.headers['x-microcms-signature'] || req.headers['X-MICROCMS-Signature'];
 
-    const signature = req.headers['x-microcms-signature'] || req.headers['X-MICROCMS-Signature'];
-    console.log('signature', signature);
-    console.log('expectedSignature', expectedSignature);
-    if (
-      !signature ||
-      Array.isArray(signature) ||
-      !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))
-    ) {
-      console.log('404stop');
-      return res.status(401).send('Invalid token');
-    }
+    // if (
+    //   !signature ||
+    //   Array.isArray(signature) ||
+    //   !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))
+    // ) {
+    //   console.log('404stop');
+    //   return res.status(401).send('Invalid token');
+    // }
 
     const contentId = req.body.contents.new.id;
 
