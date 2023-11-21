@@ -21,8 +21,8 @@ export async function POST(req: any) {
     //   return res.status(401).send('Invalid token');
     // }
 
-    console.log('req.body', req.body);
-    console.log('req', req);
+    console.log('req.body', new Request(req.body));
+    console.log('req', new Request(req));
 
     const contentId = req.body.contents.new.id;
 
