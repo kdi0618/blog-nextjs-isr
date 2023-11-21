@@ -19,7 +19,6 @@ interface ApiRequest extends NextApiRequest {
 }
 
 export async function POST(req: any, res: NextApiResponse) {
-  console.log('start')
   try {
     const crypto = require('crypto');
 
@@ -28,17 +27,19 @@ export async function POST(req: any, res: NextApiResponse) {
       .update(req.body)
       .digest('hex');
     const signature = req.headers['X-MICROCMS-Signature'];
+    console.log('signature', signature);
+    console.log('expectedSignature', expectedSignature);
     if (
       !signature ||
       Array.isArray(signature) ||
       !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))
     ) {
-      console.log('404stop')
+      console.log('404stop');
       return res.status(401).send('Invalid token');
     }
 
     const contentId = req.body.contents.new.id;
-    revalidateTag('blog')
+    revalidateTag('blog');
     console.log('revalidate', contentId);
     return res.status(200).send('Revalidated successfully');
   } catch (err) {
