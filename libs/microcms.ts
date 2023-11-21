@@ -56,7 +56,7 @@ export const getList = async (queries?: MicroCMSQueries) => {
       headers,
       next: {
         // キャッシュパージ用のキーを指定
-        tags: ['blog'],
+        tags: ['blogList'],
       },
     });
     if (!response.ok) {
@@ -81,7 +81,7 @@ export const getDetail = async (contentId: string, queries?: MicroCMSQueries) =>
     const response = await fetch(url.toString(), {
       headers,
       next: {
-        tags: ['blog'],
+        tags: [contentId],
       },
     });
     if (!response.ok) {

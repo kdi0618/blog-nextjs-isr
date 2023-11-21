@@ -22,12 +22,12 @@ export async function POST(req: any) {
     // }
 
     console.log('req.body', req.body);
+    console.log('req', req);
 
     const contentId = req.body.contents.new.id;
 
-    revalidateTag('blog');
-
-    console.log('revalidate', contentId);
+    revalidateTag('blogList');
+    revalidateTag(contentId);
 
     return new Response('Revalidation successful', {
       status: 200,
