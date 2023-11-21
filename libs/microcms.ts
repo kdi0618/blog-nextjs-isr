@@ -49,14 +49,15 @@ export const getList = async (queries?: MicroCMSQueries) => {
   try {
     const url = new URL(`https://${serviceDomain}.microcms.io/api/v1/blog`);
     if (queries) {
-      Object.keys(queries).forEach(key => url.searchParams.append(key, queries[key]));
+      Object.keys(queries).forEach((key) => url.searchParams.append(key, queries[key]));
     }
 
     const response = await fetch(url.toString(), {
       headers,
       next: {
-        tags: ['blog']
-      }
+        // キャッシュパージ用のキーを指定
+        tags: ['blog'],
+      },
     });
     if (!response.ok) {
       throw new Error('Failed to fetch list');
@@ -74,14 +75,14 @@ export const getDetail = async (contentId: string, queries?: MicroCMSQueries) =>
   try {
     const url = new URL(`https://${serviceDomain}.microcms.io/api/v1/blog/${contentId}`);
     if (queries) {
-      Object.keys(queries).forEach(key => url.searchParams.append(key, queries[key]));
+      Object.keys(queries).forEach((key) => url.searchParams.append(key, queries[key]));
     }
 
     const response = await fetch(url.toString(), {
       headers,
       next: {
-        tags: ['blog']
-      }
+        tags: ['blog'],
+      },
     });
     if (!response.ok) {
       throw new Error('Failed to fetch detail');
@@ -99,14 +100,14 @@ export const getTagList = async (queries?: MicroCMSQueries) => {
   try {
     const url = new URL(`https://${serviceDomain}.microcms.io/api/v1/tags`);
     if (queries) {
-      Object.keys(queries).forEach(key => url.searchParams.append(key, queries[key]));
+      Object.keys(queries).forEach((key) => url.searchParams.append(key, queries[key]));
     }
 
     const response = await fetch(url.toString(), {
       headers,
       next: {
-        tags: ['tag']
-      }
+        tags: ['tag'],
+      },
     });
     if (!response.ok) {
       throw new Error('Failed to fetch tag list');
@@ -124,14 +125,14 @@ export const getTag = async (contentId: string, queries?: MicroCMSQueries) => {
   try {
     const url = new URL(`https://${serviceDomain}.microcms.io/api/v1/tags/${contentId}`);
     if (queries) {
-      Object.keys(queries).forEach(key => url.searchParams.append(key, queries[key]));
+      Object.keys(queries).forEach((key) => url.searchParams.append(key, queries[key]));
     }
 
     const response = await fetch(url.toString(), {
       headers,
       next: {
-        tags: ['tag']
-      }
+        tags: ['tag'],
+      },
     });
     if (!response.ok) {
       throw new Error('Failed to fetch tag');

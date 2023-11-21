@@ -21,12 +21,14 @@ interface ApiRequest extends NextApiRequest {
 }
 
 export async function POST(req: any, res: NextApiResponse) {
-  console.log('req.headers', req.headers);
   try {
     const expectedSignature = crypto
       .createHmac('sha256', 'remove11cache')
       .update(req.body)
       .digest('hex');
+
+    console.log('middle');
+    console.log('res', res);
 
     const signature = req.headers['x-microcms-signature'] || req.headers['X-MICROCMS-Signature'];
     console.log('signature', signature);
@@ -41,8 +43,11 @@ export async function POST(req: any, res: NextApiResponse) {
     }
 
     const contentId = req.body.contents.new.id;
+
     revalidateTag('blog');
+
     console.log('revalidate', contentId);
+
     return res.status(200).send('Revalidated successfully');
   } catch (err) {
     return res.status(500).send('Error revalidating');
