@@ -29,10 +29,10 @@ export async function POST(req: any) {
 
     return new Response('Revalidation successful', {
       status: 200,
-    }).text();
+    });
   } catch {
     return new Response('Revalidation failed', {
       status: 500,
-    }).text();
+    });
   }
 }
