@@ -19,7 +19,9 @@ interface ApiRequest extends NextApiRequest {
 }
 
 export async function POST(req: any, res: NextApiResponse) {
+  console.log('req', req.body);
   try {
+    console.log('start');
     const crypto = require('crypto');
 
     const expectedSignature = crypto
