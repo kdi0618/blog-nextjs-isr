@@ -3,10 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 import crypto from 'crypto';
 
-console.log('before post handler');
-
 export async function POST(req: any) {
-  console.log('after post handler');
   try {
     // const expectedSignature = crypto
     //   .createHmac('sha256', 'remove11cache')
@@ -27,10 +24,11 @@ export async function POST(req: any) {
     console.log('req.body', req.body);
     console.log('req', req);
 
-    const contentId = req.body.contents.new.id;
+    const contentId = req.body?.contents.new.id;
 
     revalidateTag('blogList');
     revalidateTag(contentId);
+    revalidateTag('tag');
 
     return new Response('Revalidation successful', {
       status: 200,
