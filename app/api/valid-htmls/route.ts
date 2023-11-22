@@ -1,30 +1,42 @@
 import { revalidateTag } from 'next/cache';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest } from 'next/server';
 
 import crypto from 'crypto';
 
-export async function POST(req: any) {
+type Request = NextRequest & {
+  body: {
+    contents: {
+      new: {
+        id: string;
+      };
+    };
+  };
+};
+
+export async function POST(request: Request) {
   try {
-    // const expectedSignature = crypto
-    //   .createHmac('sha256', 'remove11cache')
-    //   .update(req.body)
-    //   .digest('hex');
+    const expectedSignature = crypto
+      .createHmac('sha256', 'remove11cache')
+      .update(request.body.contents.new.id)
+      .digest('hex');
 
-    // const signature = req.headers['x-microcms-signature'] || req.headers['X-MICROCMS-Signature'];
+    const signature =
+      request.headers['x-microcms-signature'] || request.headers['X-MICROCMS-Signature'];
 
-    // if (
-    //   !signature ||
-    //   Array.isArray(signature) ||
-    //   !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))
-    // ) {
-    //   console.log('404stop');
-    //   return res.status(401).send('Invalid token');
-    // }
+    if (
+      !signature ||
+      Array.isArray(signature) ||
+      !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))
+    ) {
+      return new Response('Invalid token', {
+        status: 401,
+      });
+    }
 
-    console.log('req.body', req.body);
-    console.log('req', req);
+    console.log('req.body', request.body);
+    console.log('req', request);
 
-    const contentId = req.body?.contents.new.id;
+    const contentId = request.body.contents.new.id;
 
     revalidateTag('blogList');
     revalidateTag(contentId);
