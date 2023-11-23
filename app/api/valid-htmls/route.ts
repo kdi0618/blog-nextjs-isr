@@ -14,7 +14,8 @@ import crypto from 'crypto';
 // };
 
 export async function POST(request: any) {
-  console.log(request.headers);
+  console.log(request.body);
+  console.log('request.body.');
   try {
     const expectedSignature = crypto
       .createHmac('sha256', 'remove11cache')
