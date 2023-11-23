@@ -14,7 +14,7 @@ type Request = NextRequest & {
   };
 };
 
-export async function POST(request: any) {
+export function POST(request: any) {
   try {
     const headersList = headers();
     const signature =
