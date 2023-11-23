@@ -19,26 +19,25 @@ export function POST(request: any) {
     const headersList = headers();
     const signature =
       headersList.get('x-microcms-signature') || headersList.get('X-MICROCMS-Signature');
-    console.log('signature', signature);
 
     console.log('request.json', request.json());
 
     const expectedSignature = crypto
-      .createHmac('sha256', 'remove11cache')
+      .createHmac('sha256', process.env.MICROCMS_WEBHOOK_SIGNATURE)
       .update(request.body)
       .digest('hex');
 
-    // console.log('expectedSignature', expectedSignature);
+    console.log('expectedSignature', expectedSignature);
 
-    // if (
-    //   !signature ||
-    //   Array.isArray(signature) ||
-    //   !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))
-    // ) {
-    //   return new Response('Invalid token', {
-    //     status: 401,
-    //   });
-    // }
+    if (
+      !signature ||
+      Array.isArray(signature) ||
+      !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))
+    ) {
+      return new Response('Invalid token', {
+        status: 401,
+      });
+    }
 
     console.log('req.body', request.body);
     console.log('req', request);
