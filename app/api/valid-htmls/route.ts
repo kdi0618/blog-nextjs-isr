@@ -21,8 +21,11 @@ export async function POST(request: any) {
       .update(request.body)
       .digest('hex');
 
+    console.log('expectedSignature', expectedSignature);
+
     const signature =
       request.headers['x-microcms-signature'] || request.headers['X-MICROCMS-Signature'];
+    console.log('signature', signature);
 
     if (
       !signature ||
