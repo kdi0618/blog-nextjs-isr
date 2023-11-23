@@ -14,10 +14,10 @@ import crypto from 'crypto';
 // };
 
 export async function POST(request: any) {
-  console.log('request.headers', request.headers);
   try {
     const signature =
-      request.headers['x-microcms-signature'] || request.headers['X-MICROCMS-Signature'];
+      request.headers['x-microcms-signature'].value ||
+      request.headers['X-MICROCMS-Signature'].value;
     console.log('signature', signature);
 
     console.log('request.body', request.body);
