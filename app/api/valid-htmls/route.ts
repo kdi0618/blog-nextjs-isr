@@ -14,19 +14,19 @@ import crypto from 'crypto';
 // };
 
 export async function POST(request: any) {
-  console.log(request.body);
-  console.log('request.body.');
   try {
+    const signature =
+      request.headers['x-microcms-signature'] || request.headers['X-MICROCMS-Signature'];
+    console.log('signature', signature);
+
+    console.log('request.body', request.body);
+
     const expectedSignature = crypto
       .createHmac('sha256', 'remove11cache')
       .update(request.body)
       .digest('hex');
 
     console.log('expectedSignature', expectedSignature);
-
-    const signature =
-      request.headers['x-microcms-signature'] || request.headers['X-MICROCMS-Signature'];
-    console.log('signature', signature);
 
     if (
       !signature ||
