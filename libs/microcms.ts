@@ -78,12 +78,7 @@ export const getDetail = async (contentId: string, queries?: MicroCMSQueries) =>
       Object.keys(queries).forEach((key) => url.searchParams.append(key, queries[key]));
     }
 
-    const response = await fetch(url.toString(), {
-      headers,
-      next: {
-        tags: [contentId],
-      },
-    });
+    const response = await fetch(url.toString(), { headers });
     if (!response.ok) {
       throw new Error('Failed to fetch detail');
     }

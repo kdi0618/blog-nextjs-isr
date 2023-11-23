@@ -1,4 +1,4 @@
-import { revalidateTag } from 'next/cache';
+import { revalidateTag, revalidatePath } from 'next/cache';
 import { headers } from 'next/headers';
 import type { NextRequest } from 'next/server';
 
@@ -14,7 +14,7 @@ type Request = NextRequest & {
   };
 };
 
-export async function POST(request: any) {
+export async function POST(request: Request) {
   try {
     const headersList = headers();
     const signature =
@@ -41,8 +41,8 @@ export async function POST(request: any) {
 
     if (requestJson.api === 'blog') {
       requestJson.contents?.new?.id
-        ? revalidateTag(requestJson.contents.new.id)
-        : revalidateTag('blogList');
+        ? revalidatePath(`/articles/${requestJson.contents.new.id}`)
+        : revalidatePath('/');
     } else if (requestJson.api === 'tags') {
       revalidateTag('tag');
     }
