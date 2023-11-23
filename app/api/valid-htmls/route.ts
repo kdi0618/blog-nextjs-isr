@@ -3,7 +3,6 @@ import { headers } from 'next/headers';
 import type { NextRequest } from 'next/server';
 
 import crypto from 'crypto';
-import { revalidate } from '@/app/search/page';
 
 type Request = NextRequest & {
   body: {
@@ -48,16 +47,16 @@ export async function POST(request: Request) {
     revalidateTag('blogData');
 
     if (requestJson.api === 'blog') {
-      // 元から存在するページの場合、対象ページとTOPを再生成
+      // 元から存在するページの場合、対象ページとTOPのキャッシュパージ
       if (Boolean(requestJson.contents?.old?.id)) {
         revalidatePath('/');
         revalidatePath(`/articles/${contentId}`, 'page');
       } else {
-        // 新規ページの場合はTOPを再生成
+        // 新規ページの場合はTOPのキャッシュパージ
         revalidatePath('/');
       }
     } else if (requestJson.api === 'tags') {
-      // タグ変更の場合は全ページ再生成
+      // タグ変更の場合は全ページのキャッシュパージ
       revalidatePath('/', 'layout');
     }
 
