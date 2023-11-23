@@ -24,7 +24,7 @@ export async function POST(request: any) {
 
     const expectedSignature = crypto
       .createHmac('sha256', process.env.MICROCMS_WEBHOOK_SIGNATURE)
-      .update(requestJson)
+      .update(JSON.stringify(requestJson))
       .digest('hex');
 
     if (
@@ -46,10 +46,12 @@ export async function POST(request: any) {
       revalidateTag('tag');
     }
 
+    console.log('Revalidation successful');
     return new Response('Revalidation successful', {
       status: 200,
     });
   } catch {
+    console.log('Revalidation Process Error');
     return new Response('Revalidation failed', {
       status: 500,
     });
