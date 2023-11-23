@@ -40,9 +40,7 @@ export async function POST(request: Request) {
     console.log('Revalidation Start');
 
     if (requestJson.api === 'blog') {
-      requestJson.contents?.new?.id
-        ? revalidatePath(`/articles/${requestJson.contents.new.id}`)
-        : revalidatePath('/');
+      requestJson.contents?.new?.id && revalidatePath('/', 'layout');
     } else if (requestJson.api === 'tags') {
       revalidateTag('tag');
     }
