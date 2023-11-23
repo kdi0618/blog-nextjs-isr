@@ -98,12 +98,7 @@ export const getTagList = async (queries?: MicroCMSQueries) => {
       Object.keys(queries).forEach((key) => url.searchParams.append(key, queries[key]));
     }
 
-    const response = await fetch(url.toString(), {
-      headers,
-      next: {
-        tags: ['tag'],
-      },
-    });
+    const response = await fetch(url.toString(), { headers });
     if (!response.ok) {
       throw new Error('Failed to fetch tag list');
     }
@@ -123,12 +118,7 @@ export const getTag = async (contentId: string, queries?: MicroCMSQueries) => {
       Object.keys(queries).forEach((key) => url.searchParams.append(key, queries[key]));
     }
 
-    const response = await fetch(url.toString(), {
-      headers,
-      next: {
-        tags: ['tag'],
-      },
-    });
+    const response = await fetch(url.toString(), { headers });
     if (!response.ok) {
       throw new Error('Failed to fetch tag');
     }

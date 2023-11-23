@@ -7,6 +7,9 @@ import crypto from 'crypto';
 type Request = NextRequest & {
   body: {
     contents: {
+      old: {
+        id: string;
+      };
       new: {
         id: string;
       };
@@ -38,11 +41,20 @@ export async function POST(request: Request) {
     }
 
     console.log('Revalidation Start');
+    const contentId = requestJson.contents?.old?.id;
 
     if (requestJson.api === 'blog') {
-      requestJson.contents?.new?.id && revalidatePath('/', 'layout');
+      // 元から存在するページの場合、対象ページとTOPを再生成
+      if (requestJson.contents?.old?.id) {
+        revalidatePath('/', 'page');
+        revalidatePath(`/article/${contentId}`, 'page');
+      } else {
+        // 新規ページの場合はTOPを再生成
+        revalidatePath('/', 'page');
+      }
     } else if (requestJson.api === 'tags') {
-      revalidateTag('tag');
+      // タグ変更の場合は全ページ再生成
+      revalidatePath('/', 'layout');
     }
 
     console.log('Revalidation successful');
