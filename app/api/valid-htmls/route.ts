@@ -1,23 +1,24 @@
 import { revalidateTag } from 'next/cache';
-import { NextRequest } from 'next/server';
+import type { NextRequest } from 'next/server';
 
 import crypto from 'crypto';
 
-type Request = NextRequest & {
-  body: {
-    contents: {
-      new: {
-        id: string;
-      };
-    };
-  };
-};
+// type Request = NextRequest & {
+//   body: {
+//     contents: {
+//       new: {
+//         id: string;
+//       };
+//     };
+//   };
+// };
 
-export async function POST(request: Request) {
+export async function POST(request: any) {
+  console.log(request.headers);
   try {
     const expectedSignature = crypto
       .createHmac('sha256', 'remove11cache')
-      .update(request.body.contents.new.id)
+      .update(request.body)
       .digest('hex');
 
     const signature =
