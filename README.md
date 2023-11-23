@@ -7,7 +7,7 @@ https://blog-nextjs-isr.vercel.app/
 ## Environment
 
 ```
-Node.js 20.9.0
+Node.js 18.17.1
 ```
 
 ## Environment Variable
@@ -17,6 +17,7 @@ Node.js 20.9.0
 ```
 MICROCMS_API_KEY=xxxxxxxxxx
 MICROCMS_SERVICE_DOMAIN=xxxxxxxxxx
+MICROCMS_WEBHOOK_SIGNATURE=xxxxxx  ★ISR用APIルートでの検証に使用
 BASE_URL=xxxxxxxxxx
 ```
 
@@ -49,14 +50,3 @@ npm run dev
 
 3. 開発環境へのアクセス  
    [http://localhost:3000](http://localhost:3000)にアクセス
-
-## Set up preview function
-
-下書き状態のコンテンツをプレビューするために、microCMS 管理画面にて画面プレビューの設定が必要です。
-
-ブログ API の「API 設定 > 画面プレビュー」に下記のように設定してください。  
-※`your-domain`部分はデプロイ先のドメインに置き換えてください。（localhost 指定でも動作します）
-
-![blog-preview](https://github.com/microcmsio/nextjs-simple-blog-template/assets/4659294/5045ac9e-3699-47b4-8927-4187114d75bd)
-
-設定後はコンテンツ編集画面にて画面プレビューボタンが利用可能になります。
