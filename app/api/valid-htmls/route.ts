@@ -37,11 +37,12 @@ export async function POST(request: any) {
       });
     }
 
-    const contentId = requestJson.contents.new.id;
+    console.log('Revalidation Start');
 
     if (requestJson.api === 'blog') {
-      revalidateTag('blogList');
-      revalidateTag(contentId);
+      requestJson.contents?.new?.id
+        ? revalidateTag(requestJson.contents.new.id)
+        : revalidateTag('blogList');
     } else if (requestJson.api === 'tags') {
       revalidateTag('tag');
     }
