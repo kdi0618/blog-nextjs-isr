@@ -14,13 +14,13 @@ type Request = NextRequest & {
   };
 };
 
-export function POST(request: any) {
+export async function POST(request: any) {
   try {
     const headersList = headers();
     const signature =
       headersList.get('x-microcms-signature') || headersList.get('X-MICROCMS-Signature');
-
-    console.log('request.json', request.json());
+    const requestJson = await request.json();
+    console.log('request.json', requestJson);
 
     const expectedSignature = crypto
       .createHmac('sha256', process.env.MICROCMS_WEBHOOK_SIGNATURE)
