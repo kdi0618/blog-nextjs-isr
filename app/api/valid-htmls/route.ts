@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import type { NextRequest } from 'next/server';
 
 import crypto from 'crypto';
+import { revalidate } from '@/app/search/page';
 
 type Request = NextRequest & {
   body: {
@@ -42,6 +43,9 @@ export async function POST(request: Request) {
 
     console.log('Revalidation Start');
     const contentId = requestJson.contents?.old?.id;
+
+    // fetchで取得したデータのキャッシュパージ
+    revalidateTag('blogData');
 
     if (requestJson.api === 'blog') {
       // 元から存在するページの場合、対象ページとTOPを再生成
