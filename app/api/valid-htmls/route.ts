@@ -46,11 +46,11 @@ export async function POST(request: Request) {
     if (requestJson.api === 'blog') {
       // 元から存在するページの場合、対象ページとTOPを再生成
       if (Boolean(requestJson.contents?.old?.id)) {
-        revalidatePath('/', 'page');
+        revalidatePath('/');
         revalidatePath(`/articles/${contentId}`, 'page');
       } else {
         // 新規ページの場合はTOPを再生成
-        revalidatePath('/', 'page');
+        revalidatePath('/');
       }
     } else if (requestJson.api === 'tags') {
       // タグ変更の場合は全ページ再生成
