@@ -19,15 +19,13 @@ export async function POST(request: any) {
     const headersList = headers();
     const signature =
       headersList.get('x-microcms-signature') || headersList.get('X-MICROCMS-Signature');
+
     const requestJson = await request.json();
-    console.log('request.json', requestJson);
 
     const expectedSignature = crypto
       .createHmac('sha256', process.env.MICROCMS_WEBHOOK_SIGNATURE)
-      .update(request.body)
+      .update(requestJson)
       .digest('hex');
-
-    console.log('expectedSignature', expectedSignature);
 
     if (
       !signature ||
@@ -39,14 +37,14 @@ export async function POST(request: any) {
       });
     }
 
-    console.log('req.body', request.body);
-    console.log('req', request);
+    const contentId = requestJson.contents.new.id;
 
-    const contentId = request.body.contents.new.id;
-
-    revalidateTag('blogList');
-    revalidateTag(contentId);
-    revalidateTag('tag');
+    if (requestJson.api === 'blog') {
+      revalidateTag('blogList');
+      revalidateTag(contentId);
+    } else if (requestJson.api === 'tags') {
+      revalidateTag('tag');
+    }
 
     return new Response('Revalidation successful', {
       status: 200,
