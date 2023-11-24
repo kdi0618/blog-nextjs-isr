@@ -40,27 +40,27 @@ export async function POST(request: Request) {
       });
     }
 
-    console.log('Revalidation Start');
     const contentId = requestJson.contents?.old?.id;
-
     // fetchで取得したデータのキャッシュパージ
     revalidateTag('blogData');
 
     if (requestJson.api === 'blog') {
       // 元から存在するページの場合、対象ページとTOPのキャッシュパージ
-      if (Boolean(requestJson.contents?.old?.id)) {
+      if (Boolean(contentId)) {
         revalidatePath('/');
         revalidatePath(`/articles/${contentId}`, 'page');
+        console.log('Revalidation successful');
       } else {
         // 新規ページの場合はTOPのキャッシュパージ
         revalidatePath('/');
+        console.log('Revalidation successful');
       }
     } else if (requestJson.api === 'tags') {
       // タグ変更の場合は全ページのキャッシュパージ
       revalidatePath('/', 'layout');
+      console.log('Revalidation successful');
     }
 
-    console.log('Revalidation successful');
     return new Response('Revalidation successful', {
       status: 200,
     });
