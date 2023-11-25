@@ -1,4 +1,4 @@
-import { revalidateTag, revalidatePath } from 'next/cache';
+import { revalidatePath } from 'next/cache';
 import { headers } from 'next/headers';
 import type { NextRequest } from 'next/server';
 
@@ -40,25 +40,19 @@ export async function POST(request: Request) {
       });
     }
 
-    const contentId = requestJson.contents?.old?.id;
     // fetchで取得したデータのキャッシュパージ
-    revalidateTag('blogData');
+    revalidatePath('/');
+    console.log('Revalidation successful: /');
 
-    if (requestJson.api === 'blog') {
+    const contentId = requestJson.contents?.old?.id;
+    if (requestJson.api === 'blog' && contentId) {
       // 元から存在するページの場合、対象ページとTOPのキャッシュパージ
-      if (Boolean(contentId)) {
-        revalidatePath('/');
-        revalidatePath(`/articles/${contentId}`, 'page');
-        console.log('Revalidation successful');
-      } else {
-        // 新規ページの場合はTOPのキャッシュパージ
-        revalidatePath('/');
-        console.log('Revalidation successful');
-      }
+      revalidatePath(`/articles/${contentId}`);
+      console.log(`Revalidation successful: /articles/${contentId}`);
     } else if (requestJson.api === 'tags') {
       // タグ変更の場合は全ページのキャッシュパージ
       revalidatePath('/', 'layout');
-      console.log('Revalidation successful');
+      console.log('Revalidation successful: whole pages');
     }
 
     return new Response('Revalidation successful', {
