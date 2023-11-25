@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     const contentId = requestJson.contents?.old?.id;
     if (requestJson.api === 'blog' && contentId) {
       // 元から存在するページの場合、対象ページとTOPのキャッシュパージ
-      revalidatePath(`/articles/${contentId}`);
+      revalidatePath(`/articles/${contentId}`, 'page');
       console.log(`Revalidation successful: /articles/${contentId}`);
     } else if (requestJson.api === 'tags') {
       // タグ変更の場合は全ページのキャッシュパージ
