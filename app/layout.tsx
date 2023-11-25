@@ -33,10 +33,8 @@ export default async function RootLayout({ children }: Props) {
     <html lang="ja">
       <body>
         <Header />
-        <Suspense fallback={<div>Loading...</div>}>
-          <Nav tags={tags.contents} />
-          <main className={styles.main}>{children}</main>
-        </Suspense>
+        <Nav tags={tags.contents} />
+        <main className={styles.main}>{children}</main>
         <Footer />
       </body>
     </html>
