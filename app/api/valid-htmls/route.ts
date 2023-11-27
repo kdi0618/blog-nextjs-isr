@@ -35,32 +35,36 @@ export async function POST(request: Request) {
       Array.isArray(signature) ||
       !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))
     ) {
-      return new Response('Invalid token', {
+      return new Response('[Next.js] Invalid token', {
         status: 401,
       });
     }
 
     // fetchで取得したデータのキャッシュパージ
     revalidatePath('/');
-    console.log('Revalidation successful: /');
+    console.log('[Next.js] Revalidation successful: /');
 
     const contentId = requestJson.contents?.old?.id;
+
     if (requestJson.api === 'blog' && contentId) {
       // 元から存在するページの場合、対象ページとTOPのキャッシュパージ
       revalidatePath(`/articles/${contentId}`, 'page');
-      console.log(`Revalidation successful: /articles/${contentId}`);
-    } else if (requestJson.api === 'tags') {
-      // タグ変更の場合は全ページのキャッシュパージ
-      revalidatePath('/', 'layout');
-      console.log('Revalidation successful: whole pages');
+      revalidatePath(`/tags`, 'layout');
+      console.log(`[Next.js] Revalidation successful: /articles/${contentId}`);
     }
 
-    return new Response('Revalidation successful', {
+    if (requestJson.api === 'tags') {
+      // タグ変更の場合は全ページのキャッシュパージ
+      revalidatePath('/', 'layout');
+      console.log('[Next.js] Revalidation successful: whole pages');
+    }
+
+    return new Response('[Next.js] Revalidation successful', {
       status: 200,
     });
-  } catch {
-    console.log('Revalidation Process Error');
-    return new Response('Revalidation failed', {
+  } catch (error) {
+    console.error('[Next.js] Revalidation Process Error: ', error);
+    return new Response('[Next.js] Revalidation failed', {
       status: 500,
     });
   }
